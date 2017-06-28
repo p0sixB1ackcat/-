@@ -10,6 +10,23 @@ typedef struct _dnode{
 
 }dnode,*PDNODE;
 
+
+void insert_doublelooplinklist(dnode *h,int index,dnode *p)
+{
+  dnode *q = h;
+  while(q->next != h)
+  {
+    if(q->val == index)
+      break;
+    q = q->next;
+  }
+  p->pre = q->pre;
+  p->next = q;
+  q->pre->next = p;
+  q->pre = p;
+}
+
+
 //销毁
 void destroy_looplinklist(dnode *h)
 {
@@ -21,6 +38,7 @@ void destroy_looplinklist(dnode *h)
     free(q);
     q = NULL;
   }while(p != h);
+  
 }
 
 //删除一个指定节点，指定条件为数据域val
@@ -132,13 +150,26 @@ int main(int argc,char *argv[])
 {
   dnode *h = create_looplinklist_head();
   traverse_looplinklist(h);
-  destroy_looplinklist(h);
   h = create_looplinklist_tail();
   traverse_looplinklist(h);
-  printf("\n\n");
-  del_looplinklist(h,4);
+  int index;
+  printf("please input del node val:");
+  scanf("%d",&index);
+  printf("删除一个节点后的链表:\n");
+  del_looplinklist(h,index);
   traverse_looplinklist(h);
-  printf("\n\n");
+  printf("please input insert node val in linklist:");
+  scanf("%d",&index);
+  int val;
+  printf("please input new node val:");
+  scanf("%d",&val);
+  dnode *p = (dnode *)malloc(sizeof(dnode));
+  p->pre = p->next = NULL;
+  p->val = val;
+  insert_doublelooplinklist(h,index,p);
+  printf("插入后的链表:\n");
+  traverse_looplinklist(h);
+  printf("销毁后的链表:\n");
   destroy_looplinklist(h);
   traverse_looplinklist(h);
   return 0;
