@@ -42,22 +42,38 @@ void destroy_looplinklist(dnode *h)
 }
 
 //删除一个指定节点，指定条件为数据域val
-void del_looplinklist(dnode *h,int indexval)
+void del_looplinklist(dnode **h,int indexval)
 {
-  dnode *p = h;
-  dnode *q = h;
-  while(q->val != indexval)
-  {
-    p = q;
-    q = q->next;
-  }
-  p->next = q->next;
-  q->next->pre = p;
-  free(q);
-  q = NULL;
+  if(!h)
+    return;
+   
+  dnode *p = *h;
+  dnode *q = NULL;  
   
+  do
+  {
+    if(p->val == indexval)
+    {
+      if(p == *h)
+      {
+        (*h)->next->pre = (*h)->pre;
+        (*h)->pre->next = (*h)->next;         
+        *h = (*h)->next;
+      }
+      else
+      {
+        q->next = p->next;
+        p->next->pre = q; 
+      }
+      free(p);
+      p = NULL;
+      return;
+    }
+    q = p;
+    p = p->next;
+    
+  }while(p != *h); 
 }
-
 
 //遍历
 void traverse_looplinklist(dnode *h)
@@ -156,7 +172,7 @@ int main(int argc,char *argv[])
   printf("please input del node val:");
   scanf("%d",&index);
   printf("删除一个节点后的链表:\n");
-  del_looplinklist(h,index);
+  del_looplinklist(&h,index);
   traverse_looplinklist(h);
   printf("please input insert node val in linklist:");
   scanf("%d",&index);
