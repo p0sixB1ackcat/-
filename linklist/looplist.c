@@ -84,4 +84,6 @@ int main(int argc,char *argv[])
   */
   traverse_loop_list(h);
   destroy_loop_list(h);
+  printf("销毁后的链表:\n");
+  traverse_loop_list(h);
 }

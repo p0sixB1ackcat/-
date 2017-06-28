@@ -50,7 +50,7 @@ void del_looplinklist(dnode **h,int indexval)
   dnode *p = *h;
   dnode *q = NULL;  
   
-  do
+  do//这里要用do...while，而不是while
   {
     if(p->val == indexval)
     {
@@ -85,6 +85,7 @@ void traverse_looplinklist(dnode *h)
     p = p->next;
   }while(p != h);
 }
+
 
 //创建链表，从尾部插入
 dnode *create_looplinklist_tail(void)
@@ -121,7 +122,6 @@ dnode *create_looplinklist_tail(void)
   }
   return h;
 }
-
 
 //创建循环双向链表，从头部插入
 dnode * create_looplinklist_head(void)
@@ -164,6 +164,9 @@ dnode * create_looplinklist_head(void)
 
 int main(int argc,char *argv[])
 {
+  dnode *h1= create_doublelooplinklist_tail1();
+  traverse_looplinklist(h1);
+  getchar();
   dnode *h = create_looplinklist_head();
   traverse_looplinklist(h);
   h = create_looplinklist_tail();
