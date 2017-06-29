@@ -11,6 +11,25 @@ typedef struct _dnode{
 }dnode,*PDNODE;
 
 
+void insert_doublelooplinklist1(dnode **h,int index,dnode *q)
+{
+    dnode *p = *h;
+    do
+    {
+        if(p->val == index)
+        {
+            p->pre->next = q;
+            q->pre = p->pre;
+            q->next = p;
+            if(p == *h)
+                *h = q;
+            return;
+        }
+        p = p->next;
+    }while(p != *h);
+}
+
+//旧的函数
 void insert_doublelooplinklist(dnode *h,int index,dnode *p)
 {
   dnode *q = h;
@@ -42,6 +61,32 @@ void destroy_looplinklist(dnode *h)
 }
 
 //删除一个指定节点，指定条件为数据域val
+void del_doublelooplinklist(dnode **h,int val)
+{
+    //因为是双向循环链表，所以不需要再另外定义一个指针来指向每次遍历后的节点的上一个节点了
+    dnode *p = *h;
+    do
+    {
+        if(p->val == val)
+        {
+            p->pre->next = p->next;
+            p->next->pre = p->pre;
+            if(p == *h)
+            {
+                //如果p为头结点，那么要重新设置头结点，否则下面将当前头结点释放，不在链表里，while将不会退出循环
+                (*h) = (*h)->next;
+            }
+            free(p);
+            p = NULL;
+            return;
+        }
+        p = p->next;
+        
+    }while(p != h);
+}
+
+
+//旧的函数
 void del_looplinklist(dnode **h,int indexval)
 {
   if(!h)
@@ -164,9 +209,7 @@ dnode * create_looplinklist_head(void)
 
 int main(int argc,char *argv[])
 {
-  dnode *h1= create_doublelooplinklist_tail1();
-  traverse_looplinklist(h1);
-  getchar();
+  
   dnode *h = create_looplinklist_head();
   traverse_looplinklist(h);
   h = create_looplinklist_tail();
@@ -175,8 +218,10 @@ int main(int argc,char *argv[])
   printf("please input del node val:");
   scanf("%d",&index);
   printf("删除一个节点后的链表:\n");
-  del_looplinklist(&h,index);
+  del_doublelooplinklist(&h,index);
+  //del_looplinklist(&h,index);
   traverse_looplinklist(h);
+    
   printf("please input insert node val in linklist:");
   scanf("%d",&index);
   int val;
@@ -185,7 +230,8 @@ int main(int argc,char *argv[])
   dnode *p = (dnode *)malloc(sizeof(dnode));
   p->pre = p->next = NULL;
   p->val = val;
-  insert_doublelooplinklist(h,index,p);
+  //insert_doublelooplinklist(h,index,p);
+  insert_doublelooplinklist1(&h,index,p);
   printf("插入后的链表:\n");
   traverse_looplinklist(h);
   printf("销毁后的链表:\n");
