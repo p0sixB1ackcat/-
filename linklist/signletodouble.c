@@ -1,11 +1,6 @@
-//
-//  main.m
-//  linkList
-//
-//  Created by rongbei-wuxian on 2018/4/4.
-//  Copyright © 2018年 rongbei-wuxian. All rights reserved.
-//
-
+/*
+  单链表亦或实现双链表
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,8 +66,6 @@ void TraverseForFlink(node *h)
             flink = tmp;
         }
     }
-    //printf("flink->value is %d\n",flink->value);
-    
     
     node *blink = NULL;
     
